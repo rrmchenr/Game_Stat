@@ -26,8 +26,9 @@ import java.sql.Statement;
 public class SupStats implements ActionListener {
 
     FileWriter writer;
+    boolean Keep;
 
-    JTextField Title, Play1, Play2, Stock1, Stock2, Stock3, Stock4, Stock5, Stock6, Stock7, Stock8, Stock9, Stock10, Stock11, Stock12,
+    JTextField FileField, Title, Play1, Play2, Stock1, Stock2, Stock3, Stock4, Stock5, Stock6, Stock7, Stock8, Stock9, Stock10, Stock11, Stock12,
             Damage1, Damage2, Damage3, Damage4, Damage5, Damage6, Damage7, Damage8, Damage9, Damage10, Damage11, Damage12,
             Note1, Note2, Note3, Note4, Note5, Note6, Note7, Note8, Note9, Note10, Note11, Note12;
 
@@ -45,11 +46,12 @@ public class SupStats implements ActionListener {
         JFrame guiFrame = new JFrame();
         GridLayout Lay = new GridLayout();
         guiFrame.setLayout(Lay);
-
+        
         guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         guiFrame.setTitle("SupStats");
-        guiFrame.setSize(530, 400);
-
+        guiFrame.setSize(525, 400);
+        guiFrame.setResizable(false);
+        FileField = new JTextField("HowAboutThis",30);
         Title = new JTextField(40);
         Play1 = new JTextField(7);
         Play2 = new JTextField(7);
@@ -102,6 +104,7 @@ public class SupStats implements ActionListener {
         Note8 = new JTextField("", 6);
         Note12 = new JTextField("", 6);
 
+        JLabel File = new JLabel("File name");
         JLabel TitleText = new JLabel();
         JLabel Key = new JLabel(" |Died to|        |%|    |Notes|             |Died to|      |%|      |Notes|            |Died to|       |%|      |Notes|         ");
         JLabel Space = new JLabel("---------------------------------------------------------------------------------------------------------------------------------");
@@ -124,7 +127,7 @@ public class SupStats implements ActionListener {
         S1 = new JComboBox(Stages);
         S2 = new JComboBox(Stages);
         S3 = new JComboBox(Stages);
-
+        
         Panel.add(TitleText);
         Panel.add(Title);
 
@@ -186,12 +189,29 @@ public class SupStats implements ActionListener {
 
         Panel.add(CreateTable);
         Panel.add(CloseFile);
-        boolean Keep = true;
-        try {
+        
+        Panel.add(File);
+        Panel.add(FileField);
+        Keep = true;
+        
+        try{
+writer = new FileWriter(FileField.getText()+".htm",Keep);
+        BufferedWriter bw = new BufferedWriter(writer);
+        }catch(IOException Exept){
+        System.exit(1);}
 
-            writer = new FileWriter("ShowAuntJoyce.htm", Keep);
+
+        guiFrame.add(Panel, BorderLayout.SOUTH);
+        guiFrame.setVisible(true);
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        /*try {
+
+            writer = new FileWriter(FileField.getText()+".htm", Keep);
             BufferedWriter bw = new BufferedWriter(writer);
-            if (Keep == false) {
                 writer.append(
                         "<HTML>\n"
                         + "<HEAD>\n"
@@ -203,18 +223,10 @@ public class SupStats implements ActionListener {
                         + "<BODY BGCOLOR=\"#000000\" TEXT=\"#FFFFFF\" LINK=\"#FF0000\" VLINK=\"#FFFFFF\" ALINK=\"#00FF00\" BACKGROUND=\"path/filename\" >\n"
                         + "\n"
                         + "</HEAD>\n" + "<H1><font color=\"red\">S</font><font color=#fff550\"\">u</font><font color=\"yellow\">p</font><font color=#00ccff\"\">S</font><font color=\"blue\">t</font><font color=#A600FF>a</font><font color=\"purple\">t</font><font color=\"red\">s</font></H1>\n");
-            }
+            
         } catch (IOException exe) {
             System.exit(1);
-        }
-
-        guiFrame.add(Panel, BorderLayout.SOUTH);
-        guiFrame.setVisible(true);
-
-    }
-
-    public void actionPerformed(ActionEvent e) {
-
+        }*/
         String Player1 = Play1.getText();
         String Player2 = Play2.getText();
         String Stage1 = (String) S1.getSelectedItem();
@@ -233,8 +245,6 @@ public class SupStats implements ActionListener {
         String Life10 = Stock10.getText();
         String Life11 = Stock11.getText();
         String Life12 = Stock12.getText();
-
-        
 
         if (e.getSource() == CreateTable) {
             try {
@@ -265,7 +275,11 @@ public class SupStats implements ActionListener {
                         + "</tr><BR> <BR>"
                         + "</BODY>\n"
                         + "</HTML>");
-
+System.out.println("uhhhh");
+            
+            } catch (IOException ex) {
+                System.exit(1);
+            }
                 try {
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "");
                     System.out.println("Connected!");
@@ -373,6 +387,7 @@ public class SupStats implements ActionListener {
                 }
 
                 Title.setText("");
+                
                 Play1.setText("");
                 Play2.setText("");
                 this.S1.setSelectedIndex(0);
@@ -415,12 +430,10 @@ public class SupStats implements ActionListener {
                 Note11.setText("");
                 Note12.setText("");
 
-            } catch (IOException ex) {
-                System.exit(1);
-            }
         } else if (e.getSource() == CloseFile) {
             try {
                 writer.close();
+                System.out.println("it should close");
             } catch (IOException lol) {
             }
         }
