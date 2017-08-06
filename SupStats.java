@@ -32,6 +32,8 @@ public class SupStats implements ActionListener {
             Damage1, Damage2, Damage3, Damage4, Damage5, Damage6, Damage7, Damage8, Damage9, Damage10, Damage11, Damage12,
             Note1, Note2, Note3, Note4, Note5, Note6, Note7, Note8, Note9, Note10, Note11, Note12;
 
+            Boolean Flag = true;
+    
     JComboBox S1, S2, S3;
 
     JButton CloseFile, CreateTable;
@@ -194,11 +196,7 @@ public class SupStats implements ActionListener {
         Panel.add(FileField);
         Keep = true;
         
-        try{
-writer = new FileWriter(FileField.getText()+".htm",Keep);
-        BufferedWriter bw = new BufferedWriter(writer);
-        }catch(IOException Exept){
-        System.exit(1);}
+
 
 
         guiFrame.add(Panel, BorderLayout.SOUTH);
@@ -232,7 +230,7 @@ writer = new FileWriter(FileField.getText()+".htm",Keep);
         String Stage1 = (String) S1.getSelectedItem();
         String Stage2 = (String) S2.getSelectedItem();
         String Stage3 = (String) S3.getSelectedItem();
-        
+
         String Life1 = Stock1.getText();
         String Life2 = Stock2.getText();
         String Life3 = Stock3.getText();
@@ -248,8 +246,22 @@ writer = new FileWriter(FileField.getText()+".htm",Keep);
 
         if (e.getSource() == CreateTable) {
             try {
+                if(Flag == true){
+        writer = new FileWriter(FileField.getText()+".htm",Keep);
+                }
+        BufferedWriter bw = new BufferedWriter(writer);
                 writer.append(
-                        "<table style = \"width:100%\">"
+                        "<HTML>\n"
+                        + "<HEAD>\n"
+                        + "<TITLE>Sup Stats</TITLE>\n"
+                        + "<style> "
+                        + "table, th, td{"
+                        + "border: 1px solid white;}</style>"
+                                                        + "\n"
+                        + "<BODY BGCOLOR=\"#000000\" TEXT=\"#FFFFFF\" LINK=\"#FF0000\" VLINK=\"#FFFFFF\" ALINK=\"#00FF00\" BACKGROUND=\"path/filename\" >\n"
+                        + "\n"
+                        + "\n"
+                        +"<table style = \"width:100%\">"
                         + "<caption><h3>" + Title.getText() + "</h3></caption><tr>"
                         + "<th> </th>"
                         + "<th>" + S1.getSelectedItem() + "</th>"
@@ -276,7 +288,7 @@ writer = new FileWriter(FileField.getText()+".htm",Keep);
                         + "</BODY>\n"
                         + "</HTML>");
 System.out.println("uhhhh");
-            
+            Flag = false;
             } catch (IOException ex) {
                 System.exit(1);
             }
