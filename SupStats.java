@@ -21,10 +21,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.InputStream;
 import javax.swing.JTextField;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -280,14 +282,17 @@ public class SupStats implements ActionListener {
         String Life10 = Stock10.getText();
         String Life11 = Stock11.getText();
         String Life12 = Stock12.getText();
+        
         //button to create tables in the file writer
         if (e.getSource() == CreateTable) {
+            
             //checks if title and file are empty, if not create table if they are throw an error.
             if (FileField.getText().isEmpty() == false && Title.getText().isEmpty() == false) {
                 try {
                     if (Flag == true) {
+                        
                         //writter that allows editing of files
-                        writer = new FileWriter(FileField.getText() + ".htm", Keep);
+                        writer = new FileWriter(FileField.getText() + ".htm", true);
                     }
                     BufferedWriter bw = new BufferedWriter(writer);
                     //layout of the tables to be made in the tables in html
@@ -516,7 +521,19 @@ public class SupStats implements ActionListener {
         } else if (e.getSource() == CloseFile) {
             if (FileField.getText().isEmpty() == false) {
                 try {
+                    // file varable to be used to obtain a path.
+                    File file;
+                    file = new File(FileField.getText() + ".htm");
+                    //temp file to get the path of file user created
+                    File temp;
+                    temp = new File(file.getAbsolutePath());
+                    
+                    //Opens the file
+                    Desktop desktop =  Desktop.getDesktop();
+                    desktop.open(temp);
+                    //Closes the writer, and the program.
                     writer.close();
+                    System.exit(0);
                 } catch (IOException lol) {
                 }
                 
