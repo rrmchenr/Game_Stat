@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
@@ -35,6 +36,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 public class SupStats implements ActionListener {
 // initilize variables 
@@ -59,6 +61,7 @@ public class SupStats implements ActionListener {
 
     public static void main(String[] args) {
         //self reminder to keep going
+        
         System.out.println("Sup stats will be fire");
 
         new SupStats();
@@ -67,6 +70,10 @@ public class SupStats implements ActionListener {
     public SupStats() {
         
         //variables for the java Gui
+        UIManager.put("Button.background", Color.GRAY);
+        UIManager.put("Button.foreground", Color.YELLOW);
+        UIManager.put("Panel.background", Color.LIGHT_GRAY);
+
         guiFrame = new JFrame();
         GridLayout Lay = new GridLayout();
         guiFrame.setLayout(Lay);
@@ -158,7 +165,7 @@ public class SupStats implements ActionListener {
         TitleText.setText("Title");
         
         //creates buttons and adds action listeners
-        CloseFile = new JButton("Write and Save");
+        CloseFile = new JButton("Save and open");
         CreateTable = new JButton("Create Table");
         CloseFile.addActionListener(this);
         CreateTable.addActionListener(this);
