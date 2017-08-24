@@ -1,8 +1,6 @@
 /*
 Ryan McHenry
 Video game Stats Organizer
-
-
 */
 
 
@@ -47,6 +45,24 @@ public class SupStats implements ActionListener {
     
     boolean Keep;
 
+        String Life1;
+        String Life2;
+        String Life3;
+        String Life4;
+        String Life5;
+        String Life6;
+        String Life7;
+        String Life8;
+        String Life9;
+        String Life10;
+        String Life11;
+        String Life12;
+        String Player1;
+        String Player2;
+        String Stage1;
+        String Stage2;
+        String Stage3;
+    
     JTextField FileField, Title, Play1, Play2, Stock1, Stock2, Stock3, Stock4, Stock5, Stock6, Stock7, Stock8, Stock9, Stock10, Stock11, Stock12,
             Damage1, Damage2, Damage3, Damage4, Damage5, Damage6, Damage7, Damage8, Damage9, Damage10, Damage11, Damage12,
             Note1, Note2, Note3, Note4, Note5, Note6, Note7, Note8, Note9, Note10, Note11, Note12;
@@ -60,9 +76,6 @@ public class SupStats implements ActionListener {
     JButton CloseFile, CreateTable;
 
     public static void main(String[] args) {
-        //self reminder to keep going
-        
-        System.out.println("Sup stats will be fire");
 
         new SupStats();
     }
@@ -270,13 +283,105 @@ public class SupStats implements ActionListener {
 
          //+ "</HEAD>\n" + "<H1><font color=\"red\">S</font><font color=#fff550\"\">u</font><font color=\"yellow\">p</font><font color=#00ccff\"\">S</font><font color=\"blue\">t</font><font color=#A600FF>a</font><font color=\"purple\">t</font><font color=\"red\">s</font></H1>\n");
         //Creating input text into strings.
-        String Player1 = Play1.getText();
-        String Player2 = Play2.getText();
-        String Stage1 = (String) S1.getSelectedItem();
-        String Stage2 = (String) S2.getSelectedItem();
-        String Stage3 = (String) S3.getSelectedItem();
+
         
         //Names Stock text to easier to access variables
+
+        
+        //button to create tables in the file writer
+        if (e.getSource() == CreateTable) {
+            
+            //checks if title and file are empty, if not create table if they are throw an error.
+            if (FileField.getText().isEmpty() == false && Title.getText().isEmpty() == false) {
+                write();
+                
+                //error message for not filling out title or file
+            } else {
+                JOptionPane.showMessageDialog(guiFrame, "I don't think so");
+            }
+            //writes Data to Database
+            writeData();
+
+            //Reset all variables to their original form.
+            Reset();
+            /*Title.setText("");
+
+            Play1.setText("");
+            Play2.setText("");
+            this.S1.setSelectedIndex(0);
+            this.S2.setSelectedIndex(0);
+            this.S3.setSelectedIndex(0);
+            Stock1.setText("Stock 1");
+            Stock2.setText("Stock 2");
+            Stock3.setText("Stock 3");
+            Stock4.setText("Stock 4");
+            Stock5.setText("Stock 5");
+            Stock6.setText("Stock 6");
+            Stock7.setText("Stock 7");
+            Stock8.setText("Stock 8");
+            Stock9.setText("Stock 9");
+            Stock10.setText("Stock 10");
+            Stock11.setText("Stock 11");
+            Stock12.setText("Stock 12");
+            Damage1.setText("");
+            Damage2.setText("");
+            Damage3.setText("");
+            Damage4.setText("");
+            Damage5.setText("");
+            Damage6.setText("");
+            Damage7.setText("");
+            Damage8.setText("");
+            Damage9.setText("");
+            Damage10.setText("");
+            Damage11.setText("");
+            Damage12.setText("");
+            Note1.setText("");
+            Note2.setText("");
+            Note3.setText("");
+            Note4.setText("");
+            Note5.setText("");
+            Note6.setText("");
+            Note7.setText("");
+            Note8.setText("");
+            Note9.setText("");
+            Note10.setText("");
+            Note11.setText("");
+            Note12.setText("");*/
+
+        //Button to write text to the html file and closes the program.
+        } else if (e.getSource() == CloseFile) {
+            
+            if (FileField.getText().isEmpty() == false) {
+                close();
+                
+                //Throws a message if the file or title does not have a name.
+            } else {
+                JOptionPane.showMessageDialog(guiFrame, "Give the file a name");
+            }
+        }
+        
+    }
+public void close(){
+                try {
+                    // file varable to be used to obtain a path.
+                    File file;
+                    file = new File(FileField.getText() + ".htm");
+                    //temp file to get the path of file user created
+                    File temp;
+                    temp = new File(file.getAbsolutePath());
+                    
+                    //Opens the file
+                    Desktop desktop =  Desktop.getDesktop();
+                    desktop.open(temp);
+                    //Closes the writer, and the program.
+                    writer.close();
+                    System.exit(0);
+                        
+                } catch (IOException IOex) {
+                }
+System.out.println("hey");
+}
+public void write(){
         String Life1 = Stock1.getText();
         String Life2 = Stock2.getText();
         String Life3 = Stock3.getText();
@@ -289,12 +394,7 @@ public class SupStats implements ActionListener {
         String Life10 = Stock10.getText();
         String Life11 = Stock11.getText();
         String Life12 = Stock12.getText();
-        
-        //button to create tables in the file writer
-        if (e.getSource() == CreateTable) {
-            
-            //checks if title and file are empty, if not create table if they are throw an error.
-            if (FileField.getText().isEmpty() == false && Title.getText().isEmpty() == false) {
+                if (FileField.getText().isEmpty() == false && Title.getText().isEmpty() == false) {
                 try {
                     if (Flag == true) {
                         
@@ -330,7 +430,7 @@ public class SupStats implements ActionListener {
                             + "<td>Stock1: " + Life9 + " <font color=\"red\">(" + Damage9.getText() + "%) </font>" + "<font color=\"yellow\">(" + Note9.getText() + ")</font> <BR><BR>"
                             + "Stock2: " + Life10 + " <font color=\"red\">(" + Damage10.getText() + "%) </font>" + "<font color=\"yellow\">(" + Note10.getText() + ")</font> </td>"
                             + "</tr>"
-                            + "<tr>" + "<td>" + Player2 + "</td>"
+                            + "<tr>" + "<td>" + Play2.getText() + "</td>"
                             + "<td>Stock1: " + Life3 + " <font color=\"red\">(" + Damage3.getText() + "%) </font>" + "<font color=\"yellow\">(" + Note3.getText() + ")</font> <BR><BR>"
                             + "Stock2: " + Life4 + " <font color=\"red\">(" + Damage4.getText() + "%) </font>" + "<font color=\"yellow\">(" + Note4.getText() + ")</font></td>"
                             + "<td>Stock1: " + Life7 + " <font color=\"red\">(" + Damage7.getText() + "%)</font> " + "<font color=\"yellow\">(" + Note7.getText() + ")</font> <BR><BR>"
@@ -352,11 +452,18 @@ public class SupStats implements ActionListener {
                 }
                 
                 //error message for not filling out title or file
-            } else {
-                JOptionPane.showMessageDialog(guiFrame, "I don't think so");
             }
+    
+System.out.println("write");
+}
+public void writeData(){
             try {
                 
+                        String Player1 = Play1.getText();
+        String Player2 = Play2.getText();
+        String Stage1 = (String) S1.getSelectedItem();
+        String Stage2 = (String) S2.getSelectedItem();
+        String Stage3 = (String) S3.getSelectedItem();
                 //attempts to make a connection with local database
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "");
                 System.out.println("Connected!");
@@ -368,7 +475,7 @@ public class SupStats implements ActionListener {
                 //When Damage text field has text, execute database command
                 if (Damage1.getText().isEmpty() == false) {
                     
-                    PS2.setString(1, Player1);
+                    PS2.setString(1, Play1.getText());
                     PS2.setInt(2, Integer.parseInt(Damage1.getText()));
                     PS2.setString(3, Stage1);
                     PS2.setString(4, Life1);
@@ -479,7 +586,9 @@ public class SupStats implements ActionListener {
             } catch (SQLException err) {
                 System.out.println(err.getMessage());
             }
-            //sets Texts fields back to original form after user has submitted their data.
+}
+public void Reset(){
+    System.out.println("Reset");
             Title.setText("");
 
             Play1.setText("");
@@ -523,32 +632,5 @@ public class SupStats implements ActionListener {
             Note10.setText("");
             Note11.setText("");
             Note12.setText("");
-
-        //Button to write text to the html file and closes the program.
-        } else if (e.getSource() == CloseFile) {
-            if (FileField.getText().isEmpty() == false) {
-                try {
-                    // file varable to be used to obtain a path.
-                    File file;
-                    file = new File(FileField.getText() + ".htm");
-                    //temp file to get the path of file user created
-                    File temp;
-                    temp = new File(file.getAbsolutePath());
-                    
-                    //Opens the file
-                    Desktop desktop =  Desktop.getDesktop();
-                    desktop.open(temp);
-                    //Closes the writer, and the program.
-                    writer.close();
-                    System.exit(0);
-                } catch (IOException lol) {
-                }
-                
-                //Throws a message if the file or title does not have a name.
-            } else {
-                JOptionPane.showMessageDialog(guiFrame, "Give the file a name");
-            }
-        }
-    }
-
+}
 }
