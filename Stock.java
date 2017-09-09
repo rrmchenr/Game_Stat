@@ -1,14 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package supstats.Game_Stats;
 
-/**
- *
- * @author Ryan
- */
 public class Stock{
     String DiedTo;
     String Percent;

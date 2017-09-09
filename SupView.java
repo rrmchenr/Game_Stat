@@ -1,106 +1,51 @@
-/*
-Ryan McHenry
-Video game Stats Organizer
-*/
-
 
 package supstats.Game_Stats;
-
-
-//Stylish imports
-import java.io.IOException;
-import java.io.FileWriter;
-import java.io.File;
-import java.io.BufferedWriter;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.GridLayout;
-import javax.swing.JLabel;
 import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.io.InputStream;
-import javax.swing.JTextField;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-
-public class SupStats implements ActionListener {
-// initilize variables 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+public class SupView extends JFrame{
+    
     int tables;
     
-    JFrame guiFrame;
-    FileWriter writer;
-    
-    boolean Keep;
-
-        String Life1;
-        String Life2;
-        String Life3;
-        String Life4;
-        String Life5;
-        String Life6;
-        String Life7;
-        String Life8;
-        String Life9;
-        String Life10;
-        String Life11;
-        String Life12;
-        String Player1;
-        String Player2;
-        String Stage1;
-        String Stage2;
-        String Stage3;
-    
-    JTextField FileField, Title, Play1, Play2, Stock1, Stock2, Stock3, Stock4, Stock5, Stock6, Stock7, Stock8, Stock9, Stock10, Stock11, Stock12,
+        JTextField FileField, Title, Play1, Play2, Stock1, Stock2, Stock3, Stock4, Stock5, Stock6, Stock7, Stock8, Stock9, Stock10, Stock11, Stock12,
             Damage1, Damage2, Damage3, Damage4, Damage5, Damage6, Damage7, Damage8, Damage9, Damage10, Damage11, Damage12,
             Note1, Note2, Note3, Note4, Note5, Note6, Note7, Note8, Note9, Note10, Note11, Note12;
+        
+        public JRadioButton DB;
+        public JRadioButton NoDB;
+        public ButtonGroup DataBase;
+        
+        JComboBox S1, S2, S3;
+        
+        private JLabel TableLabel = new JLabel("lol");
+        
+        JButton CloseFile, CreateTable;
     
-    Boolean Flag = true;
-
-    JComboBox S1, S2, S3;
-    
-    JLabel TableLabel;
-
-    JButton CloseFile, CreateTable;
-
-    public static void main(String[] args) {
         
-        SupView theView = new SupView();
-        Player thePlayer = new Player();
-        SupController theController = new SupController(theView, thePlayer);
-        theView.setVisible(true);
-        
-        //new SupStats();
-    }
-
-    public SupStats() {
-        
+        SupView(){
+                
         //variables for the java Gui
         UIManager.put("Button.background", Color.GRAY);
         UIManager.put("Button.foreground", Color.YELLOW);
         UIManager.put("Panel.background", Color.LIGHT_GRAY);
 
-        guiFrame = new JFrame();
+       JFrame guiFrame = new JFrame();
         GridLayout Lay = new GridLayout();
-        guiFrame.setLayout(Lay);
+        this.setLayout(Lay);
         
         //Gui settings initilised
-        guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        guiFrame.setTitle("SupStats");
-        guiFrame.setSize(525, 400);
-        guiFrame.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("SupStats");
+        this.setSize(525, 400);
+        this.setResizable(false);
         FileField = new JTextField("", 30);
         Title = new JTextField(40);
         Play1 = new JTextField(7);
@@ -166,6 +111,9 @@ public class SupStats implements ActionListener {
         Note8 = new JTextField("", 6);
         Note12 = new JTextField("", 6);
         
+        NoDB = new JRadioButton("No Database",true);
+        DB = new JRadioButton("Database",false);
+        
         //Gui Layout 
         JLabel File = new JLabel("File name/Old File name");
         JLabel TitleText = new JLabel();
@@ -185,8 +133,9 @@ public class SupStats implements ActionListener {
         //creates buttons and adds action listeners
         CloseFile = new JButton("Save and open");
         CreateTable = new JButton("Create Table");
-        CloseFile.addActionListener(this);
-        CreateTable.addActionListener(this);
+        //SupStats s = new SupStats();
+        //CloseFile.addActionListener(s);
+        //CreateTable.addActionListener(s);
 
         //creates a Panel for all the interface options to go.
         final JPanel Panel = new JPanel();
@@ -274,75 +223,25 @@ public class SupStats implements ActionListener {
         //adds file input lable and input
         Panel.add(File);
         Panel.add(FileField);
+        
+        Panel.add(NoDB);
+        Panel.add(DB);
+        
+        DataBase = new ButtonGroup();
+        DataBase.add(NoDB);
+        DataBase.add(DB);
+        
         tables = 0;
         
         //Creates the Gui and makes int visible
-        guiFrame.add(Panel, BorderLayout.SOUTH);
-        guiFrame.setVisible(true);
-
-    }
-
-    @Override
-    //Button functionality
-    public void actionPerformed(ActionEvent e) {
-
-         //+ "</HEAD>\n" + "<H1><font color=\"red\">S</font><font color=#fff550\"\">u</font><font color=\"yellow\">p</font><font color=#00ccff\"\">S</font><font color=\"blue\">t</font><font color=#A600FF>a</font><font color=\"purple\">t</font><font color=\"red\">s</font></H1>\n");
-       
-
-        
-
-        
-        //button to create tables in the file writer
-        if (e.getSource() == CreateTable) {
-            
-            //checks if title and file are empty, if not create table if they are throw an error.
-            if (FileField.getText().isEmpty() == false && Title.getText().isEmpty() == false) {
-                write();
-                
-                //error message for not filling out title or file
-            } else {
-                JOptionPane.showMessageDialog(guiFrame, "I don't think so");
-            }
-            //writes Data to Database
-            writeData();
-
-            //Reset all variables to their original form.
-            Reset();
-
-        //Button to write text to the html file and closes the program.
-        } else if (e.getSource() == CloseFile) {
-            
-            if (FileField.getText().isEmpty() == false) {
-                close();
-                
-                //Throws a message if the file or title does not have a name.
-            } else {
-                JOptionPane.showMessageDialog(guiFrame, "Give the file a name");
-            }
+        this.add(Panel);
+        //guiFrame.setVisible(true);
         }
-            }
-
-
-public void close(){
-                try {
-                    File file;
-                    file = new File(FileField.getText() + ".htm");
-                                        // file varable to be used to obtain a path.//temp file to get the path of file user created
-                    File temp;
-
-                    temp = new File(file.getAbsolutePath());
-                    
-                    //Opens the file
-                    Desktop desktop =  Desktop.getDesktop();
-                    desktop.open(temp);
-                    //Closes the writer, and the program.
-                    writer.close();
-                    System.exit(0);
-                        
-                } catch (IOException IOex) {
-                }
-}
-public void write(){
+        void addCreateTableListener(ActionListener listenForCreateTableButton){
+        CreateTable.addActionListener(listenForCreateTableButton);
+        CloseFile.addActionListener(listenForCreateTableButton);
+        }
+       public String getTableString(){
         String Life1 = Stock1.getText();
         String Life2 = Stock2.getText();
         String Life3 = Stock3.getText();
@@ -355,17 +254,7 @@ public void write(){
         String Life10 = Stock10.getText();
         String Life11 = Stock11.getText();
         String Life12 = Stock12.getText();
-                if (FileField.getText().isEmpty() == false && Title.getText().isEmpty() == false) {
-                try {
-                    if (Flag == true) {
-                        
-                        //writter that allows editing of files
-                        writer = new FileWriter(FileField.getText() + ".htm", true);
-                    }
-                    BufferedWriter bw = new BufferedWriter(writer);
-                    //layout of the tables to be made in the tables in html
-                    writer.append(
-                            "<HTML>\n"
+        String table =        "<HTML>\n"
                             + "<HEAD>\n"
                             + "<TITLE>Sup Stats</TITLE>\n"
                             + "<style> "
@@ -400,156 +289,38 @@ public void write(){
                             + "Stock2: " + Life12 + " <font color=\"red\">(" + Damage12.getText() + "%)</font> " + "<font color=\"yellow\">(" + Note12.getText() + ") </font></td>"
                             + "</tr><BR> <BR>"
                             + "</BODY>\n"
-                            + "</HTML>");
-                    //Sets a flag to skip another creation of a file writer.
-                    Flag = false;
-                    
-                    //adds 1 to the table lable and updates it.
-                    tables++;
-                    TableLabel.setText("                          Number of tables created  " + tables + " ");
-                    
-                } catch (IOException ex) {
-                    System.exit(1);
-                }
-                
-                //error message for not filling out title or file
-            }
-    
-System.out.println("write");
-}
-public void writeData(){
-            try {
-                
+                            + "</HTML>";
+       
+        return table;
+       
+       }
+       public void insertData(){
         String Player1 = Play1.getText();
         String Player2 = Play2.getText();
         String Stage1 = (String) S1.getSelectedItem();
         String Stage2 = (String) S2.getSelectedItem();
         String Stage3 = (String) S3.getSelectedItem();
-                //attempts to make a connection with local database
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "");
-                System.out.println("Connected!");
+                String Life1 = Stock1.getText();
+        String Life2 = Stock2.getText();
+        String Life3 = Stock3.getText();
+        String Life4 = Stock4.getText();
+        String Life5 = Stock5.getText();
+        String Life6 = Stock6.getText();
+        String Life7 = Stock7.getText();
+        String Life8 = Stock8.getText();
+        String Life9 = Stock9.getText();
+        String Life10 = Stock10.getText();
+        String Life11 = Stock11.getText();
+        String Life12 = Stock12.getText();
 
-                //preps insertion comand for database
-                String insert = "INSERT INTO supstats_test(Tag,Percent,Stage,Died_To)" + "VALUES (?,?,?,?)";
-                PreparedStatement PS2 = con.prepareStatement(insert);
                 
-                //When Damage text field has text, execute database command
-                if (Damage1.getText().isEmpty() == false) {
-                    
-                    PS2.setString(1, Play1.getText());
-                    PS2.setInt(2, Integer.parseInt(Damage1.getText()));
-                    PS2.setString(3, Stage1);
-                    PS2.setString(4, Life1);
-
-                    PS2.execute();
-                }
-                
-                //When Damage text field has text, execute database command
-                if (Damage2.getText().isEmpty() == false) {
-
-                    PS2.setString(1, Player1);
-                    PS2.setInt(2, Integer.parseInt(Damage2.getText()));
-                    PS2.setString(3, (Stage1));
-                    PS2.setString(4, Life2);
-                    PS2.execute();
-                }
-                
-                //When Damage text field has text, execute database command
-                if (Damage3.getText().isEmpty() == false) {
-                    PS2.setString(1, Player2);
-                    PS2.setInt(2, Integer.parseInt(Damage3.getText()));
-                    PS2.setString(3, (Stage1));
-                    PS2.setString(4, Life3);
-                    PS2.execute();
-                }
-
-                //When Damage text field has text, execute database command
-                if (Damage4.getText().isEmpty() == false) {
-                    PS2.setString(1, Player2);
-                    PS2.setInt(2, Integer.parseInt(Damage4.getText()));
-                    PS2.setString(3, (Stage1));
-                    PS2.setString(4, Life4);
-                    PS2.execute();
-                }
-                
-                //When Damage text field has text, execute database command
-                if (Damage5.getText().isEmpty() == false) {
-                    PS2.setString(1, Player1);
-                    PS2.setInt(2, Integer.parseInt(Damage5.getText()));
-                    PS2.setString(3, (Stage2));
-                    PS2.setString(4, Life5);
-                    PS2.execute();
-                }
-
-                //When Damage text field has text, execute database command
-                if (Damage6.getText().isEmpty() == false) {
-                    PS2.setString(1, Player1);
-                    PS2.setInt(2, Integer.parseInt(Damage6.getText()));
-                    PS2.setString(3, (Stage2));
-                    PS2.setString(4, Life6);
-                    PS2.execute();
-                }
-
-                //When Damage text field has text, execute database command
-                if (Damage7.getText().isEmpty() == false) {
-                    PS2.setString(1, Player2);
-                    PS2.setInt(2, Integer.parseInt(Damage7.getText()));
-                    PS2.setString(3, (Stage2));
-                    PS2.setString(4, Life7);
-                    PS2.execute();
-                }
-
-                //When Damage text field has text, execute database command
-                if (Damage8.getText().isEmpty() == false) {
-                    PS2.setString(1, Player2);
-                    PS2.setInt(2, Integer.parseInt(Damage8.getText()));
-                    PS2.setString(3, (Stage2));
-                    PS2.setString(4, Life8);
-                    PS2.execute();
-                }
-
-                //When Damage text field has text, execute database command
-                if (Damage9.getText().isEmpty() == false) {
-                    PS2.setString(1, Player1);
-                    PS2.setInt(2, Integer.parseInt(Damage9.getText()));
-                    PS2.setString(3, (Stage3));
-                    PS2.setString(4, Life9);
-                    PS2.execute();
-                }
-
-                //When Damage text field has text, execute database command
-                if (Damage10.getText().isEmpty() == false) {
-                    PS2.setString(1, Player1);
-                    PS2.setInt(2, Integer.parseInt(Damage10.getText()));
-                    PS2.setString(3, (Stage3));
-                    PS2.setString(4, Life10);
-                    PS2.execute();
-                }
-
-                //When Damage text field has text, execute database command
-                if (Damage11.getText().isEmpty() == false) {
-                    PS2.setString(1, Player2);
-                    PS2.setInt(2, Integer.parseInt(Damage11.getText()));
-                    PS2.setString(3, (Stage3));
-                    PS2.setString(4, Life11);
-                    PS2.execute();
-                }
-
-                //When Damage text field has text, execute database command
-                if (Damage12.getText().isEmpty() == false) {
-                    PS2.setString(1, Player2);
-                    PS2.setInt(2, Integer.parseInt(Damage12.getText()));
-                    PS2.setString(3, (Stage3));
-                    PS2.setString(4, Life12);
-                    PS2.execute();
-                }
-
-            } catch (SQLException err) {
-                System.out.println(err.getMessage());
-            }
-}
-public void Reset(){
-            Title.setText("");
+       }
+       public void InsertError(){
+       JOptionPane.showMessageDialog(this, "Please Give a title and file name");
+       }
+       
+       public void reset(){
+       Title.setText("");
 
             Play1.setText("");
             Play2.setText("");
@@ -592,5 +363,11 @@ public void Reset(){
             Note10.setText("");
             Note11.setText("");
             Note12.setText("");
+            tables++;
+            TableLabel.setText("             Number of tables created  " + tables + " ");
+            
+            
+       }      
+
 }
-}
+
